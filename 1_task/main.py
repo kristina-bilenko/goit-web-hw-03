@@ -1,6 +1,7 @@
 from pathlib import Path
 from shutil import copy, rmtree
 from concurrent.futures import ThreadPoolExecutor
+import os
 
 def find_dirs(path: Path, folder_with_dirs=None):
     if folder_with_dirs is None:
@@ -20,21 +21,13 @@ def copy_files(path_from_dir: Path, path_to_dir: Path):
             copy(el, path_to_dir / format_name_dir / el.name)
 
 
-def clear_dir(path: Path):
-    for item in path.iterdir():
-        if item.is_file() or item.is_symlink():
-            item.unlink()
-        elif item.is_dir():
-            rmtree(item)
-
-
 if __name__ == "__main__":
     folder_for_copy = find_dirs(Path("picture"))
+    dist = Path("dist")
+    dist.mkdir(exist_ok=True)
     with ThreadPoolExecutor() as pool:
         for el in folder_for_copy:
-            pool.submit(copy_files, el, Path("dist"))
-
-    # clear_dir(Path("dist")) # розкоментувати для очищення цільової директорії
+            pool.submit(copy_files, el, dist)
 
 
 
