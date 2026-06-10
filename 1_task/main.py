@@ -1,5 +1,5 @@
 from pathlib import Path
-from shutil import copy, rmtree
+from shutil import copy
 from concurrent.futures import ThreadPoolExecutor
 import os
 
